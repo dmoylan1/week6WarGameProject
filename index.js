@@ -1,62 +1,85 @@
 
-const suits = ["♥", "♦", "♠", "♣"];
-const value = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+//Build cards
+const cardSuits = ["♥", "♦", "♠", "♣"];
+const cardValues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
 const deck = [];
+let player1Cards, player2Cards, currentCardCount
 
+//Build deck of cards
 function newDeck() {
 //loop through all suits (4) with all values (13)
-for(var suitCounter = 0; suitCounter < 4; suitCounter++) {
-    for(var valueCounter = 0; valueCounter < 13; valueCounter++) {
-    deck.push(value[valueCounter] + suits[suitCounter]);
-    }
-    }
-return deck;
+    cardValues.forEach(function (value) {
+        cardSuits.forEach(function (suit) {
+            var card = {
+                value: value,
+                suit: suit
+            };
+            deck.push(card);
+        });
+    });
 }
 
-function shuffle() {
-    for(var i = 0; i < 52; i++) {
-        var currentCard = deck[i];
-        var randomIndex = Math.floor(Math.random() * 52);
-        deck[i] = deck[randomIndex];
-        deck[randomIndex] = currentCard;
+/**
+ * Randomly shuffle an array
+ * https://stackoverflow.com/a/2450976/1293256
+ * @param  {Array} array The array to shuffle
+ * @return {Array}       The shuffled array
+ */
+ function shuffle (array) {
+
+	let currentIndex = array.length;
+	let temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+
+}
+
+//Game setup
+function startGame() {
+    shuffle(deck);
+    player1Cards = deck.slice(0, deck.length / 2);
+    player2Cards = deck.slice((deck.length / 2 ));
+    currentCard = 0;
+
+     //testing purposes
+    console.log(player1Cards);
+    console.log(player2Cards);
     }
-    }
+
+function roundWinner(p1Card, p2Card) {
+    var p1Index = cardValues.indexOf(p1Card.value);
+    var p2Index = cardValues.indexOf(p2Card.value);
+
+    if (p1Index > p2Index) return 'Player 1 wins this round.';
+    if (p2Index > p1Index) return 'Player 2 wins this round.';
+    return 'It is a tie. Flip again.'
+}
+
+function flipCard() {
+    //pull current card for each player
+    var p1Card = player1Cards[currentCard];
+    var p2Card = player2Cards[currentCard];
+    var rWinner = roundWinner(p1Card, p2Card);
     
-    var testDeck = newDeck();
-    shuffle(testDeck);
-    console.log(testDeck);
+    //Pull new card
+    currentCard++;
 
+    //Document round
+    console.log(`Player 1 flips a ${p1Card.value + p1Card.suit}. Player 2 flips a ${p2Card.value + p2Card.suit}. ${rWinner}`)
+}
 
-// class Card {
-//     constructor(value, suit) {
-//         this.value = value;
-//         this.suit = suit;
-//     }
-
-//     method() {
-//         // make it do something
-//     }
-
-// };
-
-// class Deck {
-//     constructor(cards) {
-//         this.cards = cards; 
-//     }
-
-//     method() {
-//         // make it do something
-//     }
-
-// };
-
-// class Player {
-//     constructor(name) {
-//         this.name = name;
-//     }
-
-//     method() {
-//         // make it do something
-//     }
-
-// };
+newDeck();
+startGame();
+flipCard();
