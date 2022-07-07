@@ -74,24 +74,26 @@ function flipCard() {
     console.log(`
     Player 1 flips a ${p1Card.value + p1Card.suit}. 
     Player 2 flips a ${p2Card.value + p2Card.suit}. 
-    ${rWinner}`)
+    ${rWinner}`) 
+
+    
 }
 
-// Decide who wins round, update cardCount for each player
+// Decide who wins round by the card value index that is the highest, update cardCount for each player
 function roundWinner(p1Card, p2Card, p1CardCount, p2CardCount) {
+//    console.log(p1Card);
+//    console.log(p1Card.value);
     var p1Index = cardValues.indexOf(p1Card.value);
     var p2Index = cardValues.indexOf(p2Card.value);
-    
-
-
+    // console.log(p1Index);
     if (p1Index > p2Index) {
-        updateCount(p1CardCount, p2CardCount);
+        // updateCount(p1CardCount, p2CardCount);
         p1CardCount++;
         p2CardCount--;
         return 'Player 1 wins this round.';
     }
     if (p2Index > p1Index) {
-        updateCount(p2CardCount, p1CardCount);
+        // updateCount(p2CardCount, p1CardCount);
         p2CardCount++;
         p1CardCount--;
         return 'Player 2 wins this round.';
@@ -99,9 +101,9 @@ function roundWinner(p1Card, p2Card, p1CardCount, p2CardCount) {
     }
     else {
         return 'It is a tie. Flip again.'
-    }
+    };
+    
 }
-
 
 function updateCount(p1CardCount, p2CardCount) {
     console.log(`
@@ -110,16 +112,23 @@ function updateCount(p1CardCount, p2CardCount) {
     `)
 }
 
+function play(p1CardCount, p2CardCount) {
+    do {
+        flipCard();
+        updateCount();
+    } while (p1CardCount > 0 && p2CardCount > 0);
+    console.log(`
+        Game Over!
+        Final Score:
+        Player 1: ${p1CardCount}
+        Player 2: ${p2CardCount}
+    `)
+}
 // Play game Init
 newDeck();
 startGame();
-do {
-    flipCard();
-    updateCount();
-} while (p1CardCount > 0 && p2CardCount > 0);
-console.log(`
-    Game Over!
-    Final Score:
-    Player 1: ${p1CardCount}
-    Player 2: ${p2CardCount}
-`)
+play();
+
+// flipCard();
+// console.log(p1CardCount)
+
