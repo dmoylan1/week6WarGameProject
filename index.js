@@ -1,9 +1,11 @@
 
 //Build cards
-const cardSuits = ["♥", "♦", "♠", "♣"];
-const cardValues = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
-const deck = [];
-let player1Cards, player2Cards, p1CardCount, p2CardCount;
+var cardSuits = ["♥", "♦", "♠", "♣"];
+var cardValues = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
+var deck = [];
+var player1Cards, player2Cards, p1Card, p2Card, currentCard;
+var p1CardCount = 26;
+var p2CardCount = 26;
 
 //Build deck of cards
 function newDeck() {
@@ -46,24 +48,41 @@ function newDeck() {
 
 }
 
-//Game setup
+// Game setup
 function startGame() {
     shuffle(deck);
     player1Cards = deck.slice(0, deck.length / 2);
     player2Cards = deck.slice((deck.length / 2 ));
     currentCard = 0;
-    p1CardCount = 26;
-    p2CardCount = 26;
+
 
      //testing purposes
     console.log(player1Cards);
     console.log(player2Cards);
 }
 
+function flipCard() {
+    //pull current card for each player
+    var p1Card = player1Cards[currentCard];
+    var p2Card = player2Cards[currentCard];
+    var rWinner = roundWinner(p1Card, p2Card);
+    
+    //Pull new card
+    currentCard++;
+
+    //Document round
+    console.log(`
+    Player 1 flips a ${p1Card.value + p1Card.suit}. 
+    Player 2 flips a ${p2Card.value + p2Card.suit}. 
+    ${rWinner}`)
+}
+
 // Decide who wins round, update cardCount for each player
 function roundWinner(p1Card, p2Card, p1CardCount, p2CardCount) {
     var p1Index = cardValues.indexOf(p1Card.value);
     var p2Index = cardValues.indexOf(p2Card.value);
+    
+
 
     if (p1Index > p2Index) {
         updateCount(p1CardCount, p2CardCount);
@@ -83,21 +102,6 @@ function roundWinner(p1Card, p2Card, p1CardCount, p2CardCount) {
     }
 }
 
-function flipCard() {
-    //pull current card for each player
-    var p1Card = player1Cards[currentCard];
-    var p2Card = player2Cards[currentCard];
-    var rWinner = roundWinner(p1Card, p2Card);
-    
-    //Pull new card
-    currentCard++;
-
-    //Document round
-    console.log(`
-    Player 1 flips a ${p1Card.value + p1Card.suit}. 
-    Player 2 flips a ${p2Card.value + p2Card.suit}. 
-    ${rWinner}`)
-}
 
 function updateCount(p1CardCount, p2CardCount) {
     console.log(`
@@ -108,10 +112,14 @@ function updateCount(p1CardCount, p2CardCount) {
 
 // Play game Init
 newDeck();
-
-// while(p1CardCount > 0 && p2CardCount > 0) {
-
 startGame();
-flipCard();
-updateCount();
-// }
+do {
+    flipCard();
+    updateCount();
+} while (p1CardCount > 0 && p2CardCount > 0);
+console.log(`
+    Game Over!
+    Final Score:
+    Player 1: ${p1CardCount}
+    Player 2: ${p2CardCount}
+`)
