@@ -83,7 +83,6 @@ function flipCard() {
 function roundWinner(p1Card, p2Card, p1Score, p2Score) {
     var p1Index = cardValues.indexOf(p1Card.value);
     var p2Index = cardValues.indexOf(p2Card.value);
-    // console.log(p1Index);
     if (p1Index > p2Index) {
         updateScore(p1Score, p2Score);
         p1Score = p1Score++;
@@ -126,5 +125,3 @@ newDeck();
 startGame();
 play();
 
-// flipCard();
-// console.log(p1Score)
