@@ -4,8 +4,8 @@ var cardSuits = ["♥", "♦", "♠", "♣"];
 var cardValues = ["A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"];
 var deck = [];
 var player1Cards, player2Cards, p1Card, p2Card, currentCard;
-var p1CardCount = 26;
-var p2CardCount = 26;
+let p1Score = 26;
+let p2Score = 26;
 
 //Build deck of cards
 function newDeck() {
@@ -54,6 +54,7 @@ function startGame() {
     player1Cards = deck.slice(0, deck.length / 2);
     player2Cards = deck.slice((deck.length / 2 ));
     currentCard = 0;
+    
 
 
      //testing purposes
@@ -75,29 +76,25 @@ function flipCard() {
     Player 1 flips a ${p1Card.value + p1Card.suit}. 
     Player 2 flips a ${p2Card.value + p2Card.suit}. 
     ${rWinner}`) 
-
     
 }
 
 // Decide who wins round by the card value index that is the highest, update cardCount for each player
-function roundWinner(p1Card, p2Card, p1CardCount, p2CardCount) {
-//    console.log(p1Card);
-//    console.log(p1Card.value);
+function roundWinner(p1Card, p2Card, p1Score, p2Score) {
     var p1Index = cardValues.indexOf(p1Card.value);
     var p2Index = cardValues.indexOf(p2Card.value);
     // console.log(p1Index);
     if (p1Index > p2Index) {
-        // updateCount(p1CardCount, p2CardCount);
-        p1CardCount++;
-        p2CardCount--;
+        updateScore(p1Score, p2Score);
+        p1Score = p1Score++;
+        p2Score =  p2Score--;
         return 'Player 1 wins this round.';
     }
     if (p2Index > p1Index) {
-        // updateCount(p2CardCount, p1CardCount);
-        p2CardCount++;
-        p1CardCount--;
+        updateScore(p2Score, p1Score);
+        p2Score = p2Score++;
+        p1Score = p1Score--;
         return 'Player 2 wins this round.';
-
     }
     else {
         return 'It is a tie. Flip again.'
@@ -105,23 +102,23 @@ function roundWinner(p1Card, p2Card, p1CardCount, p2CardCount) {
     
 }
 
-function updateCount(p1CardCount, p2CardCount) {
+function updateScore() {
     console.log(`
-    Player 1 Cards: ${p1CardCount}
-    Player 2 Cards: ${p2CardCount}
+    Player 1 Score: ${p1Score}
+    Player 2 Score: ${p2Score}
     `)
 }
 
-function play(p1CardCount, p2CardCount) {
+function play() {
     do {
         flipCard();
-        updateCount();
-    } while (p1CardCount > 0 && p2CardCount > 0);
+        updateScore();
+    } while (p1Score > 0 && p2Score > 0);
     console.log(`
         Game Over!
         Final Score:
-        Player 1: ${p1CardCount}
-        Player 2: ${p2CardCount}
+        Player 1: ${p1Score}
+        Player 2: ${p2Score}
     `)
 }
 // Play game Init
@@ -130,5 +127,4 @@ startGame();
 play();
 
 // flipCard();
-// console.log(p1CardCount)
-
+// console.log(p1Score)
